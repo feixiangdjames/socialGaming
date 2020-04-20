@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        .control{
+            width: 500px;
+            margin: 100px auto;
+            overflow: hidden;
+        }
+        .wrapper{
+            display: flex;
+            flex-direction: row;
+            margin-left: -250px;
+            width: 1000px;
+            height: 100%;
+        }
+        img{
+          width: 500px;
+        }
+        input {
+            margin: 100px;
+            width: 500px;
+        }
+        .pen{
+            height: 20px;
+            width: 200px;
+            background-color: #2196f3;
+        }
+        .pen::before{
+            content:'';
+            left: 1000px;
+            border-top: 13px solid transparent;
+            border-right: 0;
+            border-bottom: 13px solid transparent;
+            border-left: 48px solid #f50000;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="pen">123</div>
+<div class="handle">
+    <label for="button">button</label>
+    <input id="button"  type="range" min="0" max="500" value="250" data-sizing="px">
+</div>
+<div class="control">
+    <div class="wrapper first">
+        <div>
+            <img src="static/RE1LJ0z_1920x1080.jpg" alt="">
+        </div>
+       <div>
+           <img src="static/RE1LJ1n_1920x1080.jpg" alt="">
+       </div>
+
+    </div>
+    </div>
+
+</body>
+<script>
+const wrapper=document.querySelector('.control .wrapper');
+const input=document.querySelector('input');
+console.log(input);
+function handleUpdate(){
+    wrapper.style.setProperty('margin-left',-1*this.value+this.dataset.sizing);
+}
+input.addEventListener('change',handleUpdate);
+input.addEventListener('mousemove',handleUpdate);
+</script>
+</html>
