@@ -66,6 +66,10 @@
             transform: translateY(-25%);
             width: 5rem;
         }
+        .active{
+            background: #7c1599;
+            border: #8aa8af .5rem;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +80,7 @@
 </div>
 <div class="board">
     <div class="tool">
-        <div class="pen">
+        <div class="pen band">
             <svg t="1587385082735" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6547" width="100" height="100"><path d="M533 810.2c-2.5 0-4.9-0.9-6.8-2.8L226.4 507.5c-3.8-3.8-3.8-9.9 0-13.6 3.8-3.8 9.9-3.8 13.6 0l299.9 299.9c3.8 3.8 3.8 9.9 0 13.6-1.9 1.8-4.4 2.8-6.9 2.8zM798.8 544.4c-2.5 0-4.9-0.9-6.8-2.8L492.1 241.7c-3.8-3.8-3.8-9.9 0-13.6s9.9-3.8 13.6 0L805.6 528c3.8 3.8 3.8 9.9 0 13.6-1.8 1.9-4.3 2.8-6.8 2.8z" p-id="6548" fill="#d4237a"></path><path d="M397.1 907.7c-39.5 0-79-15-109-45.1L117.7 692.2c-26.3-26.3-26.3-69.1 0-95.4l463.4-463.4c26.3-26.3 69.1-26.3 95.4 0l231.7 231.7c26.3 26.3 26.3 69.1 0 95.4l-402 402.1c-30.1 30.1-69.6 45.1-109.1 45.1z m231.8-755.5c-7.4 0-14.8 2.8-20.4 8.5L145 624.1c-5.5 5.5-8.5 12.7-8.5 20.4 0 7.7 3 15 8.5 20.4l170.4 170.4c45.1 45.1 118.5 45.1 163.6 0l402-402c11.3-11.3 11.3-29.6 0-40.9L649.3 160.7c-5.6-5.7-13-8.5-20.4-8.5z" p-id="6549" fill="#d4237a"></path></svg>
         </div>
         <div class="pen">
@@ -87,6 +91,7 @@
 </div>
 
 <script>
+
     const canvas = document.querySelector('#draw');
     const ctx = canvas.getContext('2d');
     canvas.width=parseFloat(window.getComputedStyle(canvas,null).width);
@@ -142,7 +147,14 @@
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', () => isDrawing = false);
     canvas.addEventListener('mouseout', () => isDrawing = false);
-
+    const rubberBand=document.querySelector('.board .tool .band');
+    rubberBand.addEventListener('mousedown',()=>{
+        ctx.clearRect(0,0,window.innerWidth,innerWidth);
+        rubberBand.classList.add('active');
+    });
+    rubberBand.addEventListener('mouseup',()=>{
+        rubberBand.classList.remove('active')
+    });
 </script>
 
 <style>
