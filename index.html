@@ -52,7 +52,6 @@
             text-align: center;
             width:  7rem;
             height: 7rem;
-            background: #F3C010;
             border-radius: 2px;
             box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
             overflow: hidden;
@@ -91,6 +90,15 @@
 </div>
 
 <script>
+    let eventModel=true;
+    (function is_iPad(){
+        const ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/iPad/i)=="ipad") {
+            eventModel=true;
+        } else {
+            eventModel=false;
+        }
+    })();
     const canvas = document.querySelector('#draw');
     const ctx = canvas.getContext('2d');
     canvas.width=parseFloat(window.getComputedStyle(canvas,null).width);
@@ -154,6 +162,7 @@
     rubberBand.addEventListener('mouseup',()=>{
         rubberBand.classList.remove('active')
     });
+
 </script>
 
 <style>
