@@ -31,7 +31,7 @@
         .tool{
             margin: .1rem;
             height:40%;
-            width:12%;
+            width:6%;
             display: flex;
             flex-direction: column;
              /*  justify-content: center;*/
@@ -50,9 +50,8 @@
 
         .pen{
             text-align: center;
-            width:  7rem;
+            width:  5rem;
             height: 7rem;
-            border-radius: 2px;
             overflow: hidden;
         }
         .logo{
@@ -67,6 +66,52 @@
         .active{
             background: #7c1599;
             border: #8aa8af .5rem;
+        }
+        svg{
+            transition: all 1s;
+            width: 5rem;
+            height: 5rem;
+        }
+        svg:hover{
+            transform: rotate(90deg);
+        }
+        .keyBoard{
+            padding-top:1rem ;
+            margin: 0 .2rem;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: 10%;
+            height: 70%;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .key {
+            border: .1rem solid black;
+            margin: .1rem .05rem;
+            font-size: 1.5rem;
+            transition: all .07s ease;
+            width: 3rem;
+            height: 3rem;
+            text-align: center;
+            color: white;
+            background: rgba(0,0,0,0.4);
+        }
+        kbd {
+            display: block;
+            text-align: center;
+            line-height: 3rem;
+            font-size: 1.5rem;
+        }
+        .key:hover{
+            transform: scale(1.5);
+            border-color: #ffc600;
+            box-shadow: 0 0 1rem #ffc600;
+        }
+        .playing {
+            transform: scale(1.1);
+            border-color: #ffc600;
+            box-shadow: 0 0 1rem #ffc600;
         }
     </style>
 </head>
@@ -86,10 +131,11 @@
         </div>
     </div>
     <canvas id="draw"></canvas>
+    <div class="keyBoard"></div>
 </div>
 
 <script>
-    let eventModel=true;
+/*    let eventModel=true;
     (function is_iPad(){
         const ua = navigator.userAgent.toLowerCase();
         if(ua.match(/iPad/i)=="ipad") {
@@ -97,19 +143,16 @@
         } else {
             eventModel=false;
         }
-    })();
+    })();*/
     const canvas = document.querySelector('#draw');
     const ctx = canvas.getContext('2d');
     canvas.width=parseFloat(window.getComputedStyle(canvas,null).width);
     canvas.height=parseFloat(window.getComputedStyle(canvas,null).height);
-    //canvas.width = window.innerWidth;
-    //canvas.height = window.innerHeight;
     ctx.strokeStyle = '#BADA55';
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
     ctx.lineWidth = 5;
     // ctx.globalCompositeOperation = 'multiply';
-
     let isDrawing = false;
     let lastX = 0;
     let lastY = 0;
@@ -161,6 +204,25 @@
     rubberBand.addEventListener('mouseup',()=>{
         rubberBand.classList.remove('active')
     });
+
+
+    function init(){
+        //init keyboard
+        let keyBoardStr='';
+        //JSON.parse('[{"key":"a","keyCode":65}]')
+        const keyMap=JSON.parse('[{"key":"a","keyCode":65},{"key":"b","keyCode":66},{"key":"c","keyCode":67},{"key":"d","keyCode":68},{"key":"e","keyCode":69},{"key":"f","keyCode":70},{"key":"g","keyCode":71},{"key":"h","keyCode":72},{"key":"i","keyCode":73},{"key":"j","keyCode":74},{"key":"k","keyCode":75},{"key":"l","keyCode":76},{"key":"m","keyCode":77},{"key":"n","keyCode":78},{"key":"o","keyCode":79},{"key":"p","keyCode":80},{"key":"q","keyCode":81},{"key":"r","keyCode":82},{"key":"s","keyCode":83},{"key":"t","keyCode":84},{"key":"u","keyCode":85},{"key":"v","keyCode":86},{"key":"w","keyCode":87},{"key":"x","keyCode":88},{"key":"y","keyCode":89},{"key":"z","keyCode":90}]');
+        for(let k of keyMap){
+          if(k.keyCode>0){
+              keyBoardStr+=`<div data-key="${k.keyCode}" class="key">
+      <kbd>${k.key.toUpperCase()}</kbd>
+    </div>`}
+        }
+        console.log(keyBoardStr);
+        const keyBoard=document.querySelector('.keyBoard');
+        const keys=document.querySelectorAll('.key');
+        keyBoard.innerHTML=keyBoardStr;
+    }
+init();
 
 </script>
 

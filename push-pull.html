@@ -70,5 +70,18 @@ function handleUpdate(){
 }
 input.addEventListener('change',handleUpdate);
 input.addEventListener('mousemove',handleUpdate);
+
+const keyMap=[];
+function keyDown(e){
+    const theKey={};
+    theKey.key=e.key;
+    theKey.keyCode=e.keyCode;
+    keyMap.push(theKey);
+    if(theKey.key==='z'){
+        console.log(JSON.parse(JSON.stringify(keyMap)));
+    }
+}
+document.onkeydown = keyDown;
+JSON.parse(JSON.stringify(keyMap))
 </script>
 </html>
