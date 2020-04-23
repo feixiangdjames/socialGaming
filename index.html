@@ -3,13 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Social Gaming</title>
+    <script>
+        ~function anonymous(window) {
+            let computedEM = function computedEM() {
+                let winW = document.documentElement.clientWidth,
+                    desW = 1920;
+                if (winW >= desW) {
+                    document.documentElement.style.fontSize = '10px';
+                    return
+                }
+                document.documentElement.style.fontSize = winW / desW * 10 + 'px';
+            };
+            computedEM();
+            window.addEventListener('resize', computedEM);
+        }(window)
+    </script>
     <style>
         body{
             background-color: #4C4C4C;
             font-size: 10px;
+            margin: 0.02rem;
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: row;
         }
-        .board{            height: 70vh;
-            width: 90%;
+        .board{
+            height: 65rem;
+            width: 98%;
             display: flex;
             flex-wrap: nowrap;
             flex-direction: row;
@@ -30,23 +50,13 @@
         .tool{
             margin: .1rem;
             height:40%;
-            width:6%;
+            width:10%;
             display: flex;
             flex-direction: column;
              /*  justify-content: center;*/
             align-items: center;     /*    */
             justify-content: space-between;
         }
-   /*     .pen::before{
-            content:'';
-            left:6rem;
-            border-top: .65rem solid transparent;
-            border-right: 0;
-            border-bottom: .65rem solid transparent;
-            border-left: 1rem solid #2196f3;
-            position:absolute;
-        }*/
-
         .pen{
             text-align: center;
             width:  5rem;
@@ -75,42 +85,64 @@
             transform: rotate(90deg);
         }
         .keyBoard{
-            padding-top:1rem ;
-            margin: 0 .2rem;
+            position: relative;
+            top: -2rem; ;
+            left:50%;
+            transform: translateX(-60%);
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            width: 10%;
-            height: 70%;
+            width: 85rem;
             align-items: center;
             justify-content: space-between;
         }
         .key {
-            border: .1rem solid black;
-            margin: .1rem .05rem;
-            font-size: 1.5rem;
+            border: .2rem solid black;
+            margin: .2rem .3rem;
+            font-size: 3rem;
             transition: all .07s ease;
-            width: 3rem;
-            height: 3rem;
+            width: 5rem;
+            height: 5rem;
             text-align: center;
-            color: white;
-            background: rgba(0,0,0,0.4);
+            color: black;
+            background: #b2ebf2;
         }
         kbd {
             display: block;
             text-align: center;
-            line-height: 3rem;
-            font-size: 1.5rem;
+            line-height: 5rem;
+            font-size: 4rem;
         }
         .key:hover{
             transform: scale(1.5);
             border-color: #ffc600;
             box-shadow: 0 0 1rem #ffc600;
         }
+        .backspace{
+            border: .2rem solid palevioletred;
+            margin: .1rem .1rem;
+            font-size: 3rem;
+            transition: all .07s ease;
+            width: 10rem;
+            height: 5rem;
+            text-align: center;
+            color: black;
+            background: beige;
+        }
+        .backspace>kbd{
+            display: block;
+            text-align: center;
+            line-height: 5rem;
+            color: black;
+        }
         .playing {
             transform: scale(1.1);
             border-color: #ffc600;
             box-shadow: 0 0 1rem #ffc600;
+        }
+        .video{
+            width: 20%;
+            border: 2px solid sienna;
         }
     </style>
 </head>
@@ -130,9 +162,9 @@
         </div>
     </div>
     <canvas id="draw"></canvas>
-    <div class="keyBoard"></div>
+    <div class="video"></div>
 </div>
-
+<div class="keyBoard"></div>
 <script>
 /*    let eventModel=true;
     (function is_iPad(){
@@ -209,12 +241,16 @@
         //init keyboard
         let keyBoardStr='';
         //JSON.parse('[{"key":"a","keyCode":65}]')
-        const keyMap=JSON.parse('[{"key":"a","keyCode":65},{"key":"b","keyCode":66},{"key":"c","keyCode":67},{"key":"d","keyCode":68},{"key":"e","keyCode":69},{"key":"f","keyCode":70},{"key":"g","keyCode":71},{"key":"h","keyCode":72},{"key":"i","keyCode":73},{"key":"j","keyCode":74},{"key":"k","keyCode":75},{"key":"l","keyCode":76},{"key":"m","keyCode":77},{"key":"n","keyCode":78},{"key":"o","keyCode":79},{"key":"p","keyCode":80},{"key":"q","keyCode":81},{"key":"r","keyCode":82},{"key":"s","keyCode":83},{"key":"t","keyCode":84},{"key":"u","keyCode":85},{"key":"v","keyCode":86},{"key":"w","keyCode":87},{"key":"x","keyCode":88},{"key":"y","keyCode":89},{"key":"z","keyCode":90}]');
+        const keyMap=JSON.parse('[{"key":"a","keyCode":65},{"key":"backspace","keyCode":8},{"key":"b","keyCode":66},{"key":"c","keyCode":67},{"key":"d","keyCode":68},{"key":"e","keyCode":69},{"key":"f","keyCode":70},{"key":"g","keyCode":71},{"key":"h","keyCode":72},{"key":"i","keyCode":73},{"key":"j","keyCode":74},{"key":"k","keyCode":75},{"key":"l","keyCode":76},{"key":"m","keyCode":77},{"key":"n","keyCode":78},{"key":"o","keyCode":79},{"key":"p","keyCode":80},{"key":"q","keyCode":81},{"key":"r","keyCode":82},{"key":"s","keyCode":83},{"key":"t","keyCode":84},{"key":"u","keyCode":85},{"key":"v","keyCode":86},{"key":"w","keyCode":87},{"key":"x","keyCode":88},{"key":"y","keyCode":89},{"key":"z","keyCode":90}]');
         for(let k of keyMap){
-          if(k.keyCode>0){
+          if(k.keyCode!==8){
               keyBoardStr+=`<div data-key="${k.keyCode}" class="key">
       <kbd>${k.key.toUpperCase()}</kbd>
-    </div>`}
+    </div>`}else{
+              keyBoardStr+=`<div data-key="${k.keyCode}" class="key backspace">
+      <kbd>BACK</kbd>
+    </div>`
+          }
         }
         console.log(keyBoardStr);
         const keyBoard=document.querySelector('.keyBoard');
